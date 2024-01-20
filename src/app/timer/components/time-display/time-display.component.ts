@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -7,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
     styleUrls: ['./time-display.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TimeDisplayComponent implements OnInit {
+export class TimeDisplayComponent {
     private hourInMs = 3600000;
     private minuteInMs = 60000;
     private secondInMs = 1000;
@@ -19,29 +20,32 @@ export class TimeDisplayComponent implements OnInit {
     @Output() setTime = new EventEmitter<number>();
 
     settingTime$ = new BehaviorSubject<boolean>(false);
-    inputHours: number;
-    inputMinutes: number;
-    inputSeconds: number;
+    inputHours = new FormControl(0);
+    inputMinutes = new FormControl(0);
+    inputSeconds = new FormControl(0);
 
     constructor() {}
-
-    ngOnInit() {}
-
-    inputChange(hours: number, minutes: number, seconds: number) {
-        const timeVal = hours * this.hourInMs + minutes * this.minuteInMs + seconds * this.secondInMs;
-        this.setTime.emit(timeVal);
-    }
 
     startSetTime() {
         if (this.canSetTime) {
             this.settingTime$.next(true);
-            this.inputHours = this.hours;
-            this.inputMinutes = this.minutes;
-            this.inputSeconds = this.seconds;
+            this.inputHours.setValue(this.hours);
+            this.inputMinutes.setValue(this.minutes);
+            this.inputSeconds.setValue(this.seconds);
         }
     }
+
     endSetTime() {
         this.settingTime$.next(false);
+    }
+
+    onDone() {
+        this.setTime.emit(
+            this.inputHours.value * this.hourInMs +
+                this.inputMinutes.value * this.minuteInMs +
+                this.inputSeconds.value * this.secondInMs
+        );
+        this.endSetTime();
     }
 
     get hours(): number {
@@ -86,6 +90,15 @@ export class TimeDisplayComponent implements OnInit {
     }
     get cSecondsDigitOne(): number {
         return this.digitOne(this.cSeconds);
+    }
+
+    get isButtonDisabled(): boolean {
+        return (
+            !!this.inputHours.errors ||
+            !!this.inputMinutes.errors ||
+            !!this.inputSeconds.errors ||
+            (!this.inputHours.value && !this.inputMinutes.value && !this.inputSeconds.value)
+        );
     }
 
     private digitTwo(val: number) {

@@ -19,34 +19,16 @@
 </div>
 <div *ngIf="settingTime$ | async" class="time-input-form">
     <mat-form-field>
-        <input
-            matInput
-            type="number"
-            placeholder="Hours"
-            value="0"
-            [(ngModel)]="inputHours"
-            (input)="inputChange(inputHours, inputMinutes, inputSeconds)"
-        />
+        <mat-label>Hours</mat-label>
+        <input matInput type="number" min="0" placeholder="Hours" [formControl]="inputHours" />
     </mat-form-field>
     <mat-form-field>
-        <input
-            matInput
-            type="number"
-            placeholder="Minutes"
-            value="0"
-            [(ngModel)]="inputMinutes"
-            (input)="inputChange(inputHours, inputMinutes, inputSeconds)"
-        />
+        <mat-label>Minutes</mat-label>
+        <input matInput type="number" min="0" placeholder="Minutes" [formControl]="inputMinutes" />
     </mat-form-field>
     <mat-form-field>
-        <input
-            matInput
-            type="number"
-            placeholder="Seconds"
-            value="0"
-            [(ngModel)]="inputSeconds"
-            (input)="inputChange(inputHours, inputMinutes, inputSeconds)"
-        />
+        <mat-label>Seconds</mat-label>
+        <input matInput type="number" min="0" placeholder="Seconds" [formControl]="inputSeconds" />
     </mat-form-field>
-    <button mat-button (click)="endSetTime()">Done</button>
+    <button mat-button [disabled]="isButtonDisabled" (click)="onDone()">Done</button>
 </div>

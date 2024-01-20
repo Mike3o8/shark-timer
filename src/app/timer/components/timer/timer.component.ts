@@ -8,7 +8,7 @@ import {
     ViewChild
 } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, Subject, timer } from 'rxjs';
-import { filter, map, mapTo, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, map, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { TimeDisplayComponent } from '../time-display/time-display.component';
 import { TimerControlsComponent } from '../timer-controls/timer-controls.component';
@@ -26,10 +26,10 @@ export class TimerComponent implements OnInit, OnDestroy {
 
     time$: Observable<number>;
     percent$: Observable<number>;
-    start$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    start$ = new BehaviorSubject<boolean>(false);
     interval$: Observable<number>;
-    reset$: Subject<void> = new Subject<void>();
-    destroyed$: Subject<void> = new Subject<void>();
+    reset$ = new Subject<void>();
+    destroyed$ = new Subject<void>();
 
     startTime: number = 5 + 1000 * 60 * 5;
 
@@ -38,15 +38,19 @@ export class TimerComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.interval$ = timer(0, 10);
 
-        this.controls.timerReset$.subscribe(() => {
+        this.controls.timerReset$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
             this.resetTimer(this.startTime);
             this.controls.stop();
             this.cd.markForCheck();
         });
 
-        this.timeDisplay.settingTime$.pipe(filter(settingTime => settingTime)).subscribe(() => this.controls.stop());
+        this.timeDisplay.settingTime$
+            .pipe(takeUntil(this.destroyed$), filter(Boolean))
+            .subscribe(() => this.controls.stop());
 
-        this.controls.timerStart$.pipe(filter(start => start)).subscribe(() => this.timeDisplay.endSetTime());
+        this.controls.timerStart$
+            .pipe(takeUntil(this.destroyed$), filter(Boolean))
+            .subscribe(() => this.timeDisplay.endSetTime());
     }
 
     ngOnDestroy() {
@@ -60,7 +64,7 @@ export class TimerComponent implements OnInit, OnDestroy {
 
         this.time$ = this.controls.timerStart$.pipe(
             filter(() => this.active),
-            switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
+            switchMap(start => (start ? this.interval$.pipe(map(() => 10)) : EMPTY)),
             scan((acc, val) => acc - val, startTime),
             startWith(startTime),
             tap(val => {

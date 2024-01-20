@@ -50,8 +50,10 @@
     .mat-mdc-button {
         flex: 1;
     }
+    .mat-mdc-button {
+        margin-top: 20px;
+    }
     ::ng-deep {
-        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-infix {
             width: auto;
             input {

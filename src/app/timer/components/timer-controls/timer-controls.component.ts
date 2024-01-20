@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { retry } from 'rxjs/operators';
 
 @Component({
     selector: 'app-timer-controls',

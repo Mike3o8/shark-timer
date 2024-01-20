@@ -3,14 +3,16 @@
     .flex-spacer {
         flex: 1 1 auto;
     }
+    width: 100%;
 }
 
-.mat-button {
+.mat-mdc-button {
     &.start-button {
         background: #425563;
         color: #ffffff;
     }
     &.reset-button {
-        background: #f1f1f1
+        background: #f1f1f1;
+        margin: 0 8px;
     }
 }

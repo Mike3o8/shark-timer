@@ -1,4 +1,3 @@
-
 # SharkTimer
 
 This is a small app that implements a timer/stopwatch widget as an Angular component, similar to what you'll see in the results of a Google search for either "[stopwatch](https://www.google.com/search?q=stopwatch)" or "[timer](https://www.google.com/search?q=timer)"
@@ -22,7 +21,7 @@ The only requirement is that it maintains basic the functionality of a timer/sto
 ## Getting started
 
 Fork + clone this repo and run `npm install` in the root directory of the repo.
- 
+
 ## Development server
 
 Run `npm start` or `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -38,10 +37,6 @@ Run `npm run build` or `ng build` to build the project. The build artifacts will
 ## Running unit tests
 
 Run `npm run test` or `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `npm run e2e` or `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 

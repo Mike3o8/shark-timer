@@ -1,15 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppEffects } from './app.effects';
-import { metaReducers, reducers } from './reducers';
 
 import { StopwatchComponent } from './timer/components/stopwatch/stopwatch.component';
 import { TimeDisplayComponent } from './timer/components/time-display/time-display.component';
@@ -17,6 +11,8 @@ import { TimerControlsComponent } from './timer/components/timer-controls/timer-
 import { TimerComponent } from './timer/components/timer/timer.component';
 import { TimerPageComponent } from './timer/pages/timer-page/timer-page.component';
 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,8 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
     declarations: [
@@ -35,19 +29,14 @@ import { FormsModule } from '@angular/forms';
         StopwatchComponent,
         TimerPageComponent,
         TimerControlsComponent,
-        TimeDisplayComponent,
+        TimeDisplayComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         FormsModule,
-        StoreModule.forRoot(reducers, { metaReducers }),
-        EffectsModule.forRoot([AppEffects]),
-        StoreDevtoolsModule.instrument({
-            maxAge: 25,
-            logOnly: environment.production,
-        }),
+        CommonModule,
         MatButtonModule,
         MatCardModule,
         MatFormFieldModule,
@@ -55,9 +44,9 @@ import { FormsModule } from '@angular/forms';
         MatInputModule,
         MatProgressBarModule,
         MatTabsModule,
-        MatToolbarModule,
+        MatToolbarModule
     ],
     providers: [],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

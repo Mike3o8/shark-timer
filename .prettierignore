@@ -1,0 +1,8 @@
+# Ignore artifacts:
+build
+coverage
+
+angular.json
+package.json
+package-lock.json
+.eslintrc.json

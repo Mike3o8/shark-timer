@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,21 +14,16 @@ describe('TimerPageComponent', () => {
     let component: TimerPageComponent;
     let fixture: ComponentFixture<TimerPageComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 TimerPageComponent,
                 TimerComponent,
                 StopwatchComponent,
                 TimerControlsComponent,
-                TimeDisplayComponent,
+                TimeDisplayComponent
             ],
-            imports: [
-                MaterialModule,
-                FormsModule,
-                RouterTestingModule,
-                NoopAnimationsModule,
-            ],
+            imports: [MaterialModule, FormsModule, RouterTestingModule, NoopAnimationsModule]
         }).compileComponents();
     }));
 

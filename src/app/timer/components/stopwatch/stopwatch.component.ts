@@ -5,48 +5,47 @@ import { filter, mapTo, scan, switchMap, takeUntil } from 'rxjs/operators';
 import { TimerControlsComponent } from '../timer-controls/timer-controls.component';
 
 @Component({
-  selector: 'app-stopwatch',
-  templateUrl: './stopwatch.component.html',
-  styleUrls: ['./stopwatch.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-stopwatch',
+    templateUrl: './stopwatch.component.html',
+    styleUrls: ['./stopwatch.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StopwatchComponent implements OnInit, OnDestroy {
-  @Input() controls: TimerControlsComponent;
-  @Input() active: boolean;
+    @Input() controls: TimerControlsComponent;
+    @Input() active: boolean;
 
-  time$: Observable<number>;
-  start$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  interval$: Observable<number>;
-  reset$: Subject<void> = new Subject<void>();
-  destroyed$: Subject<void> = new Subject<void>();
+    time$: Observable<number>;
+    start$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    interval$: Observable<number>;
+    reset$: Subject<void> = new Subject<void>();
+    destroyed$: Subject<void> = new Subject<void>();
 
-  constructor(private cd: ChangeDetectorRef) { }
+    constructor(private cd: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.interval$ = timer(0, 10);
-    this.resetTimer();
+    ngOnInit() {
+        this.interval$ = timer(0, 10);
+        this.resetTimer();
 
-    this.controls.stopwatchReset$.subscribe(() => {
-      this.resetTimer();
-      this.controls.stop();
-      this.cd.markForCheck();
-    });
-  }
+        this.controls.stopwatchReset$.subscribe(() => {
+            this.resetTimer();
+            this.controls.stop();
+            this.cd.markForCheck();
+        });
+    }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.complete();
+    }
 
-  resetTimer() {
-    this.reset$.next();
+    resetTimer() {
+        this.reset$.next();
 
-    this.time$ = this.controls.stopwatchStart$.pipe(
-      filter(() => this.active),
-      switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
-      scan((acc, val) => acc + val, 0),
-      takeUntil(this.reset$)
-    );
-  }
-
+        this.time$ = this.controls.stopwatchStart$.pipe(
+            filter(() => this.active),
+            switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
+            scan((acc, val) => acc + val, 0),
+            takeUntil(this.reset$)
+        );
+    }
 }

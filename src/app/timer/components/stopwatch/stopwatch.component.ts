@@ -26,7 +26,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
         this.interval$ = interval(75);
         this.resetTimer();
 
-        this.controls.stopwatchReset$.subscribe(() => {
+        this.controls.stopwatchReset$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
             this.resetTimer();
             this.controls.stop();
             this.cd.markForCheck();
@@ -34,6 +34,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.reset$.complete();
         this.destroyed$.next();
         this.destroyed$.complete();
     }

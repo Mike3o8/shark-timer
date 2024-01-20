@@ -61,6 +61,7 @@ export class TimerControlsComponent implements OnInit {
     reset() {
         if (this.timerActive) {
             this.timerReset$.next(0);
+            this.stopAlarm();
         } else {
             this.stopwatchReset$.next();
         }
@@ -75,6 +76,9 @@ export class TimerControlsComponent implements OnInit {
 
     toggleAlarm() {
         this.alarmEnabled$.next(!this.alarmEnabled$.value);
+        if (this.alarmSounding$.value) {
+            this.alarmEnabled$.value ? this.alarm.play() : this.alarm.pause();
+        }
     }
 
     startAlarm() {

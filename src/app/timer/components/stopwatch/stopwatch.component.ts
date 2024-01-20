@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, timer } from 'rxjs';
-import { filter, mapTo, scan, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable, Subject, interval } from 'rxjs';
+import { filter, map, scan, switchMap, takeUntil } from 'rxjs/operators';
 
 import { TimerControlsComponent } from '../timer-controls/timer-controls.component';
 
@@ -23,7 +23,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
     constructor(private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
-        this.interval$ = timer(0, 10);
+        this.interval$ = interval(75);
         this.resetTimer();
 
         this.controls.stopwatchReset$.subscribe(() => {
@@ -43,7 +43,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
 
         this.time$ = this.controls.stopwatchStart$.pipe(
             filter(() => this.active),
-            switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
+            switchMap(start => (start ? this.interval$.pipe(map(() => 75)) : EMPTY)),
             scan((acc, val) => acc + val, 0),
             takeUntil(this.reset$)
         );

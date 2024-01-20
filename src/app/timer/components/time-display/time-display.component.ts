@@ -14,7 +14,7 @@ export class TimeDisplayComponent {
     private secondInMs = 1000;
 
     @Input() time: number = 12 * this.hourInMs + 34 * this.minuteInMs + 56 * 1000 + 780;
-    @Input() showHundriths: boolean = true;
+    @Input() showHundredths: boolean = true;
     @Input() canSetTime: boolean = false;
 
     @Output() setTime = new EventEmitter<number>();

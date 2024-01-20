@@ -7,7 +7,7 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, timer } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, interval } from 'rxjs';
 import { filter, map, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { TimeDisplayComponent } from '../time-display/time-display.component';
@@ -36,7 +36,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     constructor(private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
-        this.interval$ = timer(0, 10);
+        this.interval$ = interval(75);
 
         this.controls.timerReset$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
             this.resetTimer(this.startTime);
@@ -64,7 +64,7 @@ export class TimerComponent implements OnInit, OnDestroy {
 
         this.time$ = this.controls.timerStart$.pipe(
             filter(() => this.active),
-            switchMap(start => (start ? this.interval$.pipe(map(() => 10)) : EMPTY)),
+            switchMap(start => (start ? this.interval$.pipe(map(() => 75)) : EMPTY)),
             scan((acc, val) => acc - val, startTime),
             startWith(startTime),
             tap(val => {
@@ -76,7 +76,7 @@ export class TimerComponent implements OnInit, OnDestroy {
             takeWhile(val => val >= 0)
         );
 
-        this.percent$ = this.time$.pipe(map(time => (1 - time / startTime) * 100));
+        this.percent$ = this.time$.pipe(map(time => 100 - (time / startTime) * 100));
     }
 
     setTime(startTime: number) {

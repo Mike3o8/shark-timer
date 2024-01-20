@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" [@cardExpansion]="controls.fullScreen$ | async">
     <mat-tab-group [selectedIndex]="selectedTabIndex$ | async" (selectedIndexChange)="tabChange($event)">
         <mat-tab>
             <ng-template mat-tab-label>
